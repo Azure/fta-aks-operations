@@ -11,7 +11,7 @@ As a side note, the 3rd party open source tools that we use in the session are o
 ## Agenda
 
 - [Resource Management](./articles/resource-management.md)
-- [Patching and Upgrade](./articles/upgrade-patching.md)
+- [Patching and Upgrade](./articles/patching-upgrade.md)
 - [Business Continuity and Disaster Recovery](./articles/bcdr.md)
 
 ## About FastTrack for Azure
