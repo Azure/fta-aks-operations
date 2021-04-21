@@ -28,11 +28,11 @@ Read further:
 
 ## Manage pod resources
 
-- Define resource requests and limits on all pods. For critical pods in production, set the resource requests and limits to equal numbers.
-- Enforce resource quotas on namespaces to reduce the side effects of different applications running on the same cluster.
-- Use LimitRange to apply the default requests and limits to pods on which the resource requests and limits are not defined.
+- Define **resource requests and limits** on all pods. For critical pods in production, set the resource requests and limits to equal numbers.
+- Enforce **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster.
+- Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
 - Monitor the resource usage of pods and adjust the resource requests and limits accordingly.
-- Enable the recommended metric alerts such as `OOM Killed Containers`, `Pods ready %` etc.
+- Enable the recommended metric alerts of [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) such as `OOM Killed Containers`, `Pods ready %` etc.
 - Use system node pool and user node pool to separate the system pods and application pods.
 
 Read further:

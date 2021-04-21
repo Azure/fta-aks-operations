@@ -4,7 +4,7 @@
 
 As a managed Kubernetes service in Azure, the control plane of an AKS cluster is managed by Azure, which offloads quite significant operational overheads from the AKS users. However, keeping an ASK cluster up and running is a shared responsibility between the AKS users and Azure. The AKS users need to ensure the cluster is up to date so that it is supported by Microsoft. They also need to manage the agent nodes and the workloads running in the cluster so that the business can be well served while the performance, availability and cost can be balanced.
 
-In this session, we will discuss some of the key operational areas of AKS that are often asked by our customers. We will cover them by using general guidance, best practices, tools, and demos. And hopefully, we can help the AKS users who need to manage their AKS clusters in their day-to-day work better understand what they need to do with the AKS clusters from the operational perspective.
+In this session, we will discuss some of the key operational areas of AKS that are often asked by our customers. We will cover them by using general guidance, best practices, tools, and demos. And hopefully with this session, we can help the AKS users who need to manage their AKS clusters in their day-to-day work better understand what they need to do with the AKS clusters from the operational perspective.
 
 As a side note, the 3rd party open source tools that we use in the session are outside of Microsoft technical support, as it is indicated in [Support policies for AKS](https://docs.microsoft.com/azure/aks/support-policies).
 
