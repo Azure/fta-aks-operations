@@ -20,7 +20,10 @@ Read further:
 ## Upgrade node OS
 
 - The Linux nodes in AKS clusters automatically check and install updates daily. But AKS doesn't automatically reboot the nodes even if the updates requires the reboot. You have to reboot the nodes either manually or by using tools like [Kured](https://github.com/weaveworks/kured). Please be careful about the capacity impact when you reboot the node manually or with Kured.
-- AKS provides a new node image with the latest OS and runtime updates weekly. You can use `az aks upgrade --resource-group <resource group> --name <cluster name> --node-image-only` to upgrade the node image for all nodes in the cluster, or use `az aks nodepool upgrade --resource-group <resource group> --cluster-name <cluster name> --name <nodepool name> --node-image-only` to upgrade the image of a node pool.
+- AKS provides a new node image with the latest OS and runtime updates weekly.
+  - To check the image version of a node pool, use `az aks nodepool show -g <resource group> --cluster-name <cluster name> -n <nodepool name> --query nodeImageVersion`.
+  - To upgrade the node image for all nodes in the cluster, use `az aks upgrade --resource-group <resource group> --name <cluster name> --node-image-only`. 
+  - To upgrade the image of a node pool, use `az aks nodepool upgrade --resource-group <resource group> --cluster-name <cluster name> --name <nodepool name> --node-image-only`.
 - Windows nodes can only be upgraded in this way.
 
 Read further:
@@ -44,7 +47,7 @@ AKS takes the following process to upgrade an AKS cluster (with default max surg
   > [!NOTE]
   > If you are using Azure CNI, when setting max-surge, make sure you have sufficient IP addresses for the surge of the nodes.
 
-- For critical workload in production, use [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) (PDB) to ensure the availability of the workload. Meanwhile, also make sure the PDB doesn't block the upgrade process. For example, ensure the `allowed disruptions` to be at least 1.
+- For the critical workload in production, use [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) (PDB) to ensure the availability of the workload. Meanwhile, also make sure the PDB doesn't block the upgrade process. For example, ensure the `allowed disruptions` to be at least 1.
 - It is recommended to upgrade the image of node pools regularly. The process of upgrading the node pool image is better than patching and rebooting the node manually or with Kured. You can leverage the CI/CD pipeline to upgrade the image of node pools regularly.
 - When upgrading the node pools, you can consider adopting the [blue/green upgrade strategy](https://github.com/CloudNativeGBB/aks-upgrades) if possible.
 
@@ -52,3 +55,4 @@ Read further:
 
 - [Upgrade an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster)
 - [Upgrade AKS nodes using GitHub Actions](https://docs.microsoft.com/azure/aks/node-upgrade-github-actions)
+- [AKS Day-2 Operations](https://docs.microsoft.com/azure/architecture/operator-guides/aks/aks-upgrade-practices)

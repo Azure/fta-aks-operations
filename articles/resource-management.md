@@ -31,8 +31,8 @@ Read further:
 - Define **resource requests and limits** on all pods. For critical pods in production, set the resource requests and limits to equal numbers.
 - Enforce **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster.
 - Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
-- Monitor the resource usage of pods and adjust the resource requests and limits accordingly.
-- Enable the recommended metric alerts of [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) such as `OOM Killed Containers`, `Pods ready %` etc.
+- Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and adjust the resource requests and limits accordingly.
+- Enable the recommended metric alerts of Container Insights such as `OOM Killed Containers`, `Pods ready %` etc.
 - Use system node pool and user node pool to separate the system pods and application pods.
 
 Read further:
@@ -47,5 +47,9 @@ Read further:
     > [!NOTE]
     > For AKS clusters, only use the Cluster Autoscaler to auto scale the nodes. Don't manually enable or configure the autoscale for the underlying VMSS.
 
-- For workloads that cannot scale out, consider using [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) (VPA). VPA can also be used to understand the resource limits of pods.
+- For workloads that cannot scale out, consider using [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) (VPA). With the `Off` update mode, VPA can also be used to understand the resource limits of pods.
+
+    > [!NOTE]
+    > Be cautious when you use VPA in production. Due to how Kubernetes works, when you create VPA in `Auto` or `Recreate` update mode, it evicts the pod if it needs to change its resource requests, which may cause downtime. Make sure you understand its [limitations](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#known-limitations) before using it.
+
 - [Kubecost](https://www.kubecost.com/) can be used to get the insights of the cost and resource usage pattern.
