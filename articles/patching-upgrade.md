@@ -6,8 +6,9 @@
   - To see all supported versions in an Azure region, use `az aks get-versions --location <location> --output table`.
   - To see which version your cluster can upgrade to, use `az aks get-upgrades --resource-group <resource group> --name <cluster name>`.
 - You have 30 days from a patch/minor version removal to upgrade to a supported version. Failing to do so within this time window would lead to outside of support of the cluster.
-- When you upgrade the AKS cluster, patch versions can be skipped, but minor versions cannot, except for upgrading from an unsupported version to a supported version.
-- The Kubernetes version upgrade cannot rollback or downgrade.
+- When you upgrade the AKS cluster, patch versions can be skipped. Minor versions of the control plane cannot be skipped, except for upgrading from an unsupported version to the minimum supported version. The minor versions of node agent may be same as or up to two minor versions older than the minor version of the control plane.
+  - According to the [Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/), the control plane of Kubernetes doesn't support skipping minor versions. The minor version of node agent must not be newer and may be up to 2 minor versions older than the control plane.
+- The Kubernetes upgrade of AKS cannot be rollback or downgrade.
 - The Kubernetes can be upgraded in 3 scopes:
   - **Upgrade a cluster**: `az aks upgrade --resource-group <resource group> --name <cluster name> --kubernetes-version <k8s version>`
   - **Upgrade the control plane only**: `az aks upgrade --resource-group <resource group> --name <cluster name> --kubernetes-version <k8s version> --control-plane-only`
@@ -21,10 +22,11 @@ Read further:
 
 - The Linux nodes in AKS clusters automatically check and install updates daily. But AKS doesn't automatically reboot the nodes even if the updates requires the reboot. You have to reboot the nodes either manually or by using tools like [Kured](https://github.com/weaveworks/kured). Please be careful about the capacity impact when you reboot the node manually or with Kured.
 - AKS provides a new node image with the latest OS and runtime updates weekly.
-  - To check the image version of a node pool, use `az aks nodepool show -g <resource group> --cluster-name <cluster name> -n <nodepool name> --query nodeImageVersion`.
-  - To upgrade the node image for all nodes in the cluster, use `az aks upgrade --resource-group <resource group> --name <cluster name> --node-image-only`. 
+  - To check the image version of a node pool, use `az aks nodepool show --resource-group <resource group> --cluster-name <cluster name> -name <nodepool name> --query nodeImageVersion`.
+  - To see the latest image version available for the node pool, use `az aks nodepool get-upgrades --resource-group <resource group> --cluster-name <cluster name> --nodepool-name <nodepool name>`.
+  - To upgrade the node image for all nodes in the cluster, use `az aks upgrade --resource-group <resource group> --name <cluster name> --node-image-only`.
   - To upgrade the image of a node pool, use `az aks nodepool upgrade --resource-group <resource group> --cluster-name <cluster name> --name <nodepool name> --node-image-only`.
-- Windows nodes can only be upgraded in this way.
+- The OS of Windows nodes can only be upgraded with the image.
 
 Read further:
 
@@ -32,7 +34,7 @@ Read further:
 
 ## How AKS upgrade works
 
-AKS takes the following process to upgrade an AKS cluster (with default max surge).
+AKS takes the following process to upgrade an AKS cluster (with default max surge which is 1).
 
 - A buffer node with the specified Kubernetes version is added to the cluster.
 - An old node is cordoned and drained.
@@ -45,11 +47,11 @@ AKS takes the following process to upgrade an AKS cluster (with default max surg
 - To increase the speed of upgrades, consider setting the max surge of node pools. Max-surge setting of 33% is recommended for production node pools.
 
   > [!NOTE]
-  > If you are using Azure CNI, when setting max-surge, make sure you have sufficient IP addresses for the surge of the nodes.
+  > If you are using Azure CNI, when setting max-surge, make sure you have sufficient IP addresses for the surge of the nodes. Also make sure you have enough compute quota.
 
 - For the critical workload in production, use [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) (PDB) to ensure the availability of the workload. Meanwhile, also make sure the PDB doesn't block the upgrade process. For example, ensure the `allowed disruptions` to be at least 1.
 - It is recommended to upgrade the image of node pools regularly. The process of upgrading the node pool image is better than patching and rebooting the node manually or with Kured. You can leverage the CI/CD pipeline to upgrade the image of node pools regularly.
-- When upgrading the node pools, you can consider adopting the [blue/green upgrade strategy](https://github.com/CloudNativeGBB/aks-upgrades) if possible.
+- When upgrading the node pools of medium and large AKS clusters, you can consider adopting the [blue/green upgrade strategy](https://github.com/CloudNativeGBB/aks-upgrades) if possible.
 
 Read further:
 
