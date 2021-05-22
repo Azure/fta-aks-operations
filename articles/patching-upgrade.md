@@ -7,7 +7,10 @@
   - To see which version your cluster can upgrade to, use `az aks get-upgrades --resource-group <resource group> --name <cluster name>`.
 - You have 30 days from a patch/minor version removal to upgrade to a supported version. Failing to do so within this time window would lead to outside of support of the cluster.
 - When you upgrade the AKS cluster, patch versions can be skipped. Minor versions of the control plane cannot be skipped, except for upgrading from an unsupported version to the minimum supported version. The minor versions of node agent may be same as or up to two minor versions older than the minor version of the control plane.
-  - According to the [Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/), the control plane of Kubernetes doesn't support skipping minor versions. The minor version of node agent must not be newer and may be up to 2 minor versions older than the control plane.
+
+  > [!NOTE]
+  > According to the [Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/), the control plane of Kubernetes doesn't support skipping minor versions. The minor version of node agent must not be newer and may be up to 2 minor versions older than the control plane.
+
 - The Kubernetes upgrade of AKS cannot be rollback or downgrade.
 - The Kubernetes can be upgraded in 3 scopes:
   - **Upgrade a cluster**: `az aks upgrade --resource-group <resource group> --name <cluster name> --kubernetes-version <k8s version>`
