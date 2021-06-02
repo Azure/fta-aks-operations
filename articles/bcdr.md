@@ -16,9 +16,11 @@ Read further:
 ## BC/DR best practices
 
 - The financially backed uptime SLA is recommended for AKS clusters in production. Enable availability zones for the clusters in production.
-- Define your own SLA for your ASK clusters. If the uptime SLA cannot meet your requirement, or if the impact of the potential outage is not affordable, consider deploying the AKS cluster to another region. The cluster in the second region can be used as a hot, warm or cold standby of the cluster in the primary region.
-- Try to avoid storing the state of applications in the cluster as much as you can.
-- If you have to store the state, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions etc.
+- Define your own SLA for your ASK clusters. If the uptime SLA cannot meet your requirement, or if the impact of the potential outage is not affordable, consider deploying the AKS cluster to the paired region. The cluster in the paired region can be used as a hot, warm or cold standby of the cluster in the primary region.
+  - The planned maintenance of AKS platform are serialized with a delay of at least 24 hours between paired regions.
+  - Recovery efforts for paired regions are prioritized where needed.
+- Avoid storing the state of applications in the cluster as much as you can. Externalize state by using a database or other data store that runs outside of the AKS cluster.
+- If you have to store the state in the cluster, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions etc.
 - Use Infrastructure as Code (IaC) to deploy and configure AKS clusters. With IaC, you can redeploy the clusters quickly whenever needed.
 - Use CI/CD pipeline to deploy applications. Include your AKS clusters in different regions in the pipeline to ensure the latest code is deployed in all clusters simultaneously.
 - Use Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure) to backup the applications and the volumes on the cluster.
