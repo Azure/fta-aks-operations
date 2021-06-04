@@ -23,11 +23,13 @@ Read further:
 - Use CI/CD pipeline to deploy applications. Include your AKS clusters in different regions in the pipeline to ensure the latest code is deployed in all clusters simultaneously.
 - Avoid storing the state of applications in the cluster as much as you can. Externalize state by using a database or other data store that runs outside of the AKS cluster.
 - If you have to store the state in the cluster, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions, the RPO/RTO etc.
-  - Build the infrastructure-based asynchronous replication based on distributed storage solutions such as [GlusterFS](https://docs.gluster.org/en/latest/) or storage solutions for Kubernetes such as [Portworx](https://portworx.com/).
-  - Backup and restore the applications and the volumes on the cluster by using Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure).
+  - Build the infrastructure-based asynchronous geo-replication based on distributed storage solutions such as [GlusterFS](https://docs.gluster.org/en/latest/) or storage solutions for Kubernetes such as [Portworx](https://portworx.com/).
+  - Backup and restore the applications and the persistent volumes on the cluster by using Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure).
 
     > [!NOTE]
     > You can use Velero to backup applications as well as the persistent volumes that are based on Azure Managed Disk. For persistent volumes that are based on Azure Files, you can use [Velero with Restic](https://velero.io/docs/v1.6/restic/). But make sure you understand all its limitations before using it. An alternative approach is to backup Azure Files separately with Azure Backup.
+
+- Create a DR plan for your AKS clusters. Have rehearsals regularly to make sure it works.
 
 Read further:
 
