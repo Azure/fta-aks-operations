@@ -12,11 +12,12 @@
 Read further:
 
 - [AKS Uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla)
+- [SLA for AKS](https://azure.microsoft.com/support/legal/sla/kubernetes-service/v1_1/)
 
 ## BC/DR best practices
 
-- The financially backed uptime SLA is recommended for AKS clusters in production. Enable availability zones for the clusters in production.
-- Define your own SLA for your ASK clusters. If the uptime SLA cannot meet your requirement, or if the impact of the potential outage is not affordable, consider deploying the AKS cluster to the paired region. The cluster in the paired region can be used as a hot, warm or cold standby of the cluster in the primary region.
+- The financially backed uptime SLA is recommended for AKS clusters in production. Deploy the AKS clusters in production with availability zones.
+- Define your own SLA for the workloads that you run in ASK clusters. If the SLA of AKS cannot meet your requirement, or if the impact of the potential outage is not affordable, consider deploying another AKS cluster to the paired region. The cluster in the paired region can be used as a hot, warm or cold standby of the cluster in the primary region.
   - The planned maintenance of AKS platform are serialized with a delay of at least 24 hours between paired regions.
   - Recovery efforts for paired regions are prioritized where needed.
 - Use Infrastructure as Code (IaC) to deploy and configure AKS clusters. With IaC, you can redeploy the clusters quickly whenever needed.
