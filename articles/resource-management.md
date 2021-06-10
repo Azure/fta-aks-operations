@@ -31,12 +31,12 @@ Read further:
 - Define **resource requests and limits** on all pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
   - CPU is a compressible resource. A container will be throttled, but not terminated, when its CPU usage goes over the CPU limit.
   - Memory is a non-compressible resource. A container will be terminated when its memory usages goes over the memory limit.
-- Enforce **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
+- Use **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
 - Enable [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference) to enforce the CPU and memory limit on pods.
 - Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and nodes. Adjust the resource requests and limits accordingly.
 - Monitor the OOMKilled errors by enabling the recommended metric alerts of Container Insights such as `OOM Killed Containers`, `Pods ready %` etc.
 - Use system node pool and user node pool to separate the system pods and application pods.
-- On Kubernetes nodes, don't install any software outside of the Kubernetes. If you have to install some software on nodes, use the native Kubernetes way for it, such as DaemonSet.
+- On Kubernetes nodes, don't install any software outside of the Kubernetes. If you have to install some software on nodes, use the native Kubernetes way to do it, such as using DaemonSet.
 
   > [!NOTE]
   > According to the [AKS support policy](https://docs.microsoft.com/azure/aks/support-policies#shared-responsibility), any modification done directly to the agent nodes using any of the IaaS APIs renders the cluster unsupportable.
@@ -46,7 +46,7 @@ Read further:
 - [AKS Operator Best Practices](https://docs.microsoft.com/azure/aks/operator-best-practices-scheduler)
 - [Recommended metric alerts from Container insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)
 
-## Tools
+## Tools for resource management
 
 - Enable autoscaling with Horizontal Pod Autoscaler (HPA) and Cluster Autoscaler to autoscale the pods and nodes.
 
