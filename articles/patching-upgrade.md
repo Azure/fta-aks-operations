@@ -78,14 +78,19 @@ AKS takes the following process to upgrade an AKS cluster (with default max surg
 
 ## Recommendations for the upgrade strategy
 
-- For medium and large AKS clusters, upgrade Kubernetes on control plane first, and then upgrade node pools one at a time. Avoid upgrading the whole cluster in one shot.
+- For medium and large AKS clusters, upgrade Kubernetes on control plane first, and then upgrade node pools one at a time. Avoid upgrading the whole cluster in one shot. However, if you upgrade a cluster from unsupported version to the supported version, you should upgrade the whole cluster to avoid having the unsupported version skew.
 - To increase the speed of upgrades, consider setting the max surge of node pools. Max-surge setting of 33% is recommended for production node pools.
 
   > [!NOTE]
   > If you are using Azure CNI, when setting max-surge, make sure you have sufficient IP addresses for the surge of the nodes. Also make sure you have enough compute quota.
 
 - For the critical workload in production, use [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) (PDB) to ensure the availability of the workload. Meanwhile, also make sure the PDB doesn't block the upgrade process. For example, ensure the `allowed disruptions` to be at least 1.
-- It is recommended to upgrade the image of node pools regularly. The process of upgrading the node pool image is better than patching and rebooting the node manually or with Kured. You can leverage the CI/CD pipeline to upgrade the image of node pools regularly.
+- It is recommended to upgrade the image of node pools regularly. The process of upgrading the node pool image is better than patching and rebooting the node manually or with Kured. You can leverage the CI/CD pipeline or [auto-upgrade channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel) to upgrade the image of node pools regularly.
+- Use [Planned Maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) to control the schedule of the upgrade.
+  
+  > [!NOTE]
+  > Auto-upgrade channel and Planned Maintenance are preview features.
+
 - When upgrading the node pools of medium and large AKS clusters, you can consider adopting the [blue/green upgrade strategy](https://github.com/CloudNativeGBB/aks-upgrades) if possible.
 
 Read further:
