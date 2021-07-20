@@ -5,7 +5,7 @@
 - The financially backed uptime SLA is for the Kubernetes API server.
   - Clusters that use availability zones: **99.95%**
   - Clusters that do not use availability zones: **99.9%**
-- The SLO for clusters which opt out of the pain SLA is **99.5%**.
+- The SLO for clusters which opt out of the paid uptime SLA is **99.5%**.
 - The SLA of the agent node is covered by the virtual machine SLA of Azure.
 - **The SLA guarantees that you will get the service credit if we don't meet the SLA.** Evaluate the **cost of the impact** vs. **the service credit** you get in case outage happens, and plan the BC/DR strategy accordingly.
 
