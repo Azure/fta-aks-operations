@@ -9,8 +9,8 @@
 - Since the scheduler only uses the `resource requests` when scheduling pods, a node could be overcommitted, the sum of the `resource limits` of all pods on the node could be more than the `node allocatable` of the node.
 - When a node is under resource pressure, it could evict the pods running on it to reclaim resources. When it has to do it, it uses the following order to identify which pod should be evicted first:
   1. Whether the pod's resource usage exceeds its `resource requests`
-  1. Pod priority
-  1. The pod's resource usage relative to its `resource requests`
+  2. Pod priority
+  3. The pod's resource usage relative to its `resource requests`
 
 Read further:
 
@@ -20,7 +20,7 @@ Read further:
 
 ## Recommendations for resource management
 
-- Define **resource requests and limits** on all pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
+- Define **resource requests and limits** on all your pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
 - Use **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
 - Enable [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference) to enforce the CPU and memory limit on pods.
 - Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and nodes. Adjust the resource requests and limits accordingly.
