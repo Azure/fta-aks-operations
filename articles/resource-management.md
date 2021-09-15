@@ -1,36 +1,26 @@
 # Resource Management
 
-## Understand the node capacity
+## How resource management works in Kubernetes
 
-AKS reserves the following resources on each node in the cluster.
-
-- **eviction-hard**: memory.available<750Mi
-- **kube-reserved**:
-  - CPU:
-
-    |Cores on host  |1  |2  |4  |8  |16  |32  |64  |
-    |---------------|---|---|---|---|---|----|----|
-    |kube-reserved(millicores)  |60 |100|140|180|260|420|740  |
-
-  - Memory:
-    - 25% of the first 4 GB of memory
-    - 20% of the next 4 GB of memory (up to 8 GB)
-    - 10% of the next 8 GB of memory (up to 16 GB)
-    - 6% of the next 112 GB of memory (up to 128 GB)
-    - 2% of any memory above 128 GB
-
-- **Node Allocatable** = [node capacity] - [kube-reserved] - [eviction-hard]. You can see it with `kubectl describe node`.
-- **Kubelet evicts pods whenever the overall memory usage across all pods on the node exceeds the node allocatable.**
+- When a pod needs to be scheduled, Kubernetes scheduler doesn't look at the actual resource usage at that moment on each node. Rather, it uses the `node allocatable` and the sum of the `resource requests` of all pods running on the node to make the decision.
+- With the `resource limits` defined, if a container attempts to use more resources than its limits:
+  - If it attempts to use more CPU which is compressible, its CPU time will be throttled;
+  - If it attempts to use more memory which is incompressible, it will be terminated.
+- Since the scheduler only uses the `resource requests` when scheduling pods, a node could be overcommitted, the sum of the `resource limits` of all pods on the node could be more than the `node allocatable` of the node.
+- When a node is under resource pressure, it could evict the pods running on it to reclaim resources. When it has to do it, it uses the following order to identify which pod should be evicted first:
+  1. Whether the pod's resource usage exceeds its `resource requests`
+  1. Pod priority
+  1. The pod's resource usage relative to its `resource requests`
 
 Read further:
 
-- [Resource reservations](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads#resource-reservations)
+- [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [Node-pressure Eviction](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/)
+- [Resource reservations of AKS](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads#resource-reservations)
 
 ## Recommendations for resource management
 
 - Define **resource requests and limits** on all pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
-  - CPU is a compressible resource. A container will be throttled, but not terminated, when its CPU usage goes over the CPU limit.
-  - Memory is a non-compressible resource. A container will be terminated when its memory usages goes over the memory limit.
 - Use **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
 - Enable [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference) to enforce the CPU and memory limit on pods.
 - Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and nodes. Adjust the resource requests and limits accordingly.
