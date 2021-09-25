@@ -4,18 +4,18 @@
 
 - When a pod needs to be scheduled, Kubernetes scheduler doesn't look at the actual resource usage at that moment on each node. Rather, it uses the `node allocatable` and the sum of the `resource requests` of all pods running on the node to make the decision.
 
-|![The Scheduler only cares about requests](../assets/scheduler-requests.jpg) |
-|:--:|
-|*The Scheduler only cares about requests* [<sup>1</sup>](#fn1) |
+  |![The Scheduler only cares about requests](../assets/scheduler-requests.jpg) |
+  |:--:|
+  |*The Scheduler only cares about requests* [<sup>1</sup>](#fn1) |
 
 - With the `resource limits` defined, if a container attempts to use more resources than its limits:
   - If it attempts to use more CPU which is compressible, its CPU time will be throttled;
   - If it attempts to use more memory which is incompressible, it will be terminated.
 - Since the scheduler only uses the `resource requests` when scheduling pods, a node could be overcommitted, the sum of the `resource limits` of all pods on the node could be more than the `node allocatable` of the node.
 
-|![Overcommitting](../assets/overcommitting.jpg) |
-|:--:|
-|*Node is overcommitted* [<sup>1</sup>](#fn1) |
+  |![Node is overcommitted](../assets/overcommitting.jpg) |
+  |:--:|
+  |*Node is overcommitted* [<sup>1</sup>](#fn1) |
 
 - When a node is under resource pressure, it could evict the pods running on it to reclaim resources. When it has to do it, it uses the following order to identify which pod should be evicted first:
   1. Whether the pod's resource usage exceeds its `resource requests`
