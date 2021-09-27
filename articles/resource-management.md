@@ -4,9 +4,9 @@
 
 - When a pod needs to be scheduled, Kubernetes scheduler doesn't look at the actual resource usage at that moment on each node. Rather, it uses the `node allocatable` and the sum of the `resource requests` of all pods running on the node to make the decision.
 
-  |![The Scheduler only cares about requests](../assets/scheduler-requests.jpg) |
+  |![The Scheduler only cares about resource requests](../assets/scheduler-requests.jpg) |
   |:--:|
-  |*The Scheduler only cares about requests* [<sup>1</sup>](#fn1) |
+  |*The Scheduler only cares about resource requests* [<sup>1</sup>](#fn1) |
 
 - With the `resource limits` defined, if a container attempts to use more resources than its limits:
   - If it attempts to use more CPU which is compressible, its CPU time will be throttled;
@@ -30,7 +30,7 @@ Read further:
 
 ## Recommendations for resource management
 
-- Define **resource requests and limits** on all your pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
+- Define **resource requests and limits** on all containers in your pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
 - Use **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
 - Enable [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference) to enforce the CPU and memory limit on pods.
 - Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and nodes. Adjust the resource requests and limits accordingly.
@@ -60,6 +60,6 @@ Read further:
 
 - [Kubecost](https://www.kubecost.com/) can be used to get the insights of the cost and resource usage pattern.
 
-## References
+---
 
-[1.] <span id="fn1"></span> Marko Luksa. 2018. *Kubernetes In Action*. Manning Publications Co.
+[1.] <span id="fn1"></span> Marko Luksa. 2018. *[Kubernetes In Action](https://www.amazon.com/Kubernetes-Action-Marko-Luksa/dp/1617293725/)*. Manning Publications Co.
