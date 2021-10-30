@@ -91,7 +91,7 @@ AKS takes the following process to upgrade an AKS cluster (with default max surg
   > [!NOTE]
   > Auto-upgrade channel and Planned Maintenance are preview features.
 
-- When upgrading the node pools of medium and large AKS clusters, you can consider adopting the [blue/green upgrade strategy](https://github.com/CloudNativeGBB/aks-upgrades) if possible.
+- When upgrading the node pools of medium and large AKS clusters, you can consider adopting the **blue/green upgrade strategy** if possible.
 
 Read further:
 
