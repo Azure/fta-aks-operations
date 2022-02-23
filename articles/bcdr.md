@@ -24,10 +24,13 @@ Read further:
 - Use Infrastructure as Code (IaC) to deploy and configure AKS clusters. With IaC, you can redeploy the clusters quickly whenever needed.
     - Ensure any management activities (i.e. patches, upgrades, identity and access management) is applied on the secondary instances
 - Use CI/CD pipeline to deploy applications. Include your AKS clusters in different regions in the pipeline to ensure the latest code is deployed in all clusters simultaneously.
-    - Consider [GitOps](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2#for-azure-kubernetes-service-clusters) to ensure consistent deployment across primary and secondary clusters
+    - Consider [GitOps](https://docs.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2#for-azure-kubernetes-service-clusters) to ensure consistent deployment across primary and secondary clusters
 - Avoid storing the state of applications in the cluster as much as you can. Externalize state by using a database or other data store that runs outside of the AKS cluster.
 - If you have to store the state in the cluster, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions, the RPO/RTO etc.
   - [ZRS](https://github.com/kubernetes-sigs/azuredisk-csi-driver/tree/master/deploy/example/topology#zrs-disk-support) Disks allows creation of volumes that can tolerate zonal failures. Stateful workloads in a multi-zone cluster can be moved across zones with uninterrupted access to the volumes.
+  
+    > [!NOTE] ZRS is in preview and make sure that the [limitations](https://docs.microsoft.com/azure/virtual-machines/disks-redundancy#limitations) are reviewed.
+  
   - Build the infrastructure-based asynchronous geo-replication based on distributed storage solutions such as [GlusterFS](https://docs.gluster.org/en/latest/) or storage solutions for Kubernetes such as [Portworx](https://portworx.com/).
   - Backup and restore the applications and the persistent volumes on the cluster by using Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure) or [Kasten](https://www.kasten.io/).
 
