@@ -4,20 +4,10 @@
 
 - When a pod needs to be scheduled, Kubernetes scheduler doesn't look at the actual resource usage at that moment on each node. Rather, it uses the `node allocatable` and the sum of the `resource requests` of all pods running on the node to make the decision.
 
-  |![The Scheduler only cares about resource requests](../assets/scheduler-requests.jpg) |
-  |:--:|
-  |*The Scheduler only cares about resource requests* [^1] |
-
 - With the `resource limits` defined, if a container attempts to use more resources than its limits:
   - If it attempts to use more CPU which is compressible, its CPU time will be throttled;
   - If it attempts to use more memory which is incompressible, it will be terminated.
 - Since the scheduler only uses the `resource requests` when scheduling pods, a node could be overcommitted, the sum of the `resource limits` of all pods on the node could be more than the `node allocatable` of the node.
-
-  |![Node is overcommitted](../assets/overcommitting.jpg) |
-  |:--:|
-  |*Node is overcommitted* [^1] |
-
-[^1]: Marko Luksa. 2018. *[Kubernetes In Action](https://www.amazon.com/Kubernetes-Action-Marko-Luksa/dp/1617293725/)*. Manning Publications Co.
 
 - When a node is under resource pressure, it could evict the pods running on it to reclaim resources. When it has to do it, it uses the following order to identify which pod should be evicted first:
   1. Whether the pod's resource usage exceeds its `resource requests`
@@ -40,7 +30,7 @@ Read further:
 - Use system node pool and user node pool to separate the system pods and application pods.
 - On Kubernetes nodes, don't install any software outside of the Kubernetes. If you have to install some software on nodes, use the native Kubernetes way to do it, such as using DaemonSet.
 
-  > [!NOTE]
+  > ⚠️
   > According to the [AKS support policy](https://docs.microsoft.com/azure/aks/support-policies#shared-responsibility), any modification done directly to the agent nodes using any of the IaaS APIs renders the cluster unsupportable.
 
 Read further:
@@ -52,12 +42,12 @@ Read further:
 
 - Use autoscaling with Horizontal Pod Autoscaler (HPA) and Cluster Autoscaler to autoscale the pods and nodes.
 
-  > [!NOTE]
+  > ⚠️
   > For AKS clusters, only use the Cluster Autoscaler to auto scale the nodes. Don't manually enable or configure the autoscale for the underlying VMSS.
 
 - For workloads that cannot scale out, consider using [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) (VPA). With the `Off` update mode, VPA can also be used to understand the resource limits of pods.
 
-  > [!NOTE]
+  > ⚠️
   > Be cautious when you use VPA in production. Due to how Kubernetes works, when you create VPA in `Auto` or `Recreate` update mode, it evicts the pod if it needs to change its resource requests, which may cause downtime. Make sure you understand its [limitations](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#known-limitations) before using it.
 
 - [Kubecost](https://www.kubecost.com/) can be used to get the insights of the cost and resource usage pattern.
