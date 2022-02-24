@@ -1,3 +1,5 @@
+> ⚠️ This repo has been archived. Please find the lastest version of the content here: https://github.com/Azure/FTALive-Sessions/tree/main/content/aks/aks-operations
+
 # AKS Operations
 
 ## Introduction
