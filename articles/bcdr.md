@@ -29,7 +29,7 @@ Read further:
 - If you have to store the state in the cluster, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions, the RPO/RTO etc.
   - [ZRS](https://github.com/kubernetes-sigs/azuredisk-csi-driver/tree/master/deploy/example/topology#zrs-disk-support) Disks allows creation of volumes that can tolerate zonal failures. Stateful workloads in a multi-zone cluster can be moved across zones with uninterrupted access to the volumes.
   
-    > [!NOTE] ZRS is in preview and make sure that the [limitations](https://docs.microsoft.com/azure/virtual-machines/disks-redundancy#limitations) are reviewed.
+    > ⚠️ ZRS is currently only available in West Europe, North Europe, West US 2, and France Central regions. Make sure that its [limitations](https://docs.microsoft.com/azure/virtual-machines/disks-redundancy#limitations) are reviewed before using it.
   
   - Build the infrastructure-based asynchronous geo-replication based on distributed storage solutions such as [GlusterFS](https://docs.gluster.org/en/latest/) or storage solutions for Kubernetes such as [Portworx](https://portworx.com/).
   - Backup and restore the applications and the persistent volumes on the cluster by using Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure) or [Kasten](https://www.kasten.io/).
